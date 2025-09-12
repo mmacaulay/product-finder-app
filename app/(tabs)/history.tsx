@@ -3,12 +3,12 @@ import { StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
-export default function FindScreen() {
+export default function HistoryScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Find Products</ThemedText>
-        <ThemedText type="subtitle">Search for products using the magnifying glass</ThemedText>
+        <ThemedText type="title">Search History</ThemedText>
+        <ThemedText type="subtitle">View your previous searches and results</ThemedText>
       </ThemedView>
     </ThemedView>
   );
