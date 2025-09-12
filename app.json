@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "product-finder",
-    "slug": "product-finder",
+    "name": "product-finder-app",
+    "slug": "product-finder-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "productfinder",
+    "scheme": "productfinderapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
