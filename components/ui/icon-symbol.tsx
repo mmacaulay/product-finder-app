@@ -20,6 +20,7 @@ const MAPPING = {
   'chevron.right': 'chevron-right',
   'magnifyingglass': 'search',
   'clock': 'access-time',
+  'camera.fill': 'camera-alt',
 } as IconMapping;
 
 /**

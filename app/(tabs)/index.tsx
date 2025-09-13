@@ -1,14 +1,25 @@
-import { StyleSheet } from 'react-native';
+import { router } from 'expo-router';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { IconSymbol } from '@/components/ui/icon-symbol';
 
 export default function FindScreen() {
+  const handleScan = () => {
+    router.push('/camera-modal');
+  };
+
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Find Products</ThemedText>
-        <ThemedText type="subtitle">Search for products using the magnifying glass</ThemedText>
+        <ThemedText type="default" style={styles.bodyText}>Tap scan and then hold the camera over the product&apos;s barcode.</ThemedText>
+        
+        <TouchableOpacity style={styles.scanButton} onPress={handleScan}>
+          <IconSymbol name="camera.fill" size={24} color="#fff" />
+          <ThemedText style={styles.scanButtonText}>Scan</ThemedText>
+        </TouchableOpacity>
       </ThemedView>
     </ThemedView>
   );
@@ -24,5 +35,32 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 16,
+  },
+  scanButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#007AFF',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 12,
+    gap: 8,
+    marginTop: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  scanButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  bodyText: {
+    textAlign: 'center',
   },
 });
