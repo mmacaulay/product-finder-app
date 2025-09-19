@@ -1,4 +1,5 @@
-import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
+import { useBarcode } from '@/contexts/BarcodeContext';
+import { BarcodeScanningResult, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -6,6 +7,13 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 export default function CameraModal() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
+  const { setBarcodeData } = useBarcode();
+
+  const handleBarcodeScanned = (barcode: BarcodeScanningResult) => {
+    console.log('Barcode scanned:', barcode);
+    setBarcodeData({ data: barcode.data, type: barcode.type });
+    router.dismiss();
+  };
 
   if (!permission) {
     // Camera permissions are still loading
@@ -21,7 +29,7 @@ export default function CameraModal() {
           <TouchableOpacity style={styles.button} onPress={requestPermission}>
             <Text style={styles.buttonText}>Grant Permission</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cancelButton} onPress={() => router.back()}>
+          <TouchableOpacity style={styles.cancelButton} onPress={() => router.dismiss()}>
             <Text style={styles.cancelButtonText}>Cancel</Text>
           </TouchableOpacity>
         </View>
@@ -31,9 +39,14 @@ export default function CameraModal() {
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing}>
+      <CameraView style={styles.camera} facing={facing}
+        barcodeScannerSettings={{
+            barcodeTypes: ["qr", "ean13", "ean8", "upc_a", "upc_e", "code128", "code39", "code93", "codabar"],
+        }}
+        onBarcodeScanned={handleBarcodeScanned}
+        >
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.cancelButton} onPress={() => router.back()}>
+          <TouchableOpacity style={styles.cancelButton} onPress={() => router.dismiss()}>
             <Text style={styles.cancelButtonText}>Cancel</Text>
           </TouchableOpacity>
         </View>
