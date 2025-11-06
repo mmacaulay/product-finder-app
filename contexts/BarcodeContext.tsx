@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 
-interface BarcodeData {
+export interface BarcodeData {
   data: string;
   type: string;
 }

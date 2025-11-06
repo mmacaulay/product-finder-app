@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
+import { ProductInfo } from '@/components/product-info';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -20,11 +21,7 @@ export default function FindScreen() {
         <ThemedText type="default" style={styles.bodyText}>Tap scan and then hold the camera over the product&apos;s barcode.</ThemedText>
         
         {barcodeData && (
-          <ThemedView style={styles.resultContainer}>
-            <ThemedText type="subtitle">Scanned Barcode:</ThemedText>
-            <ThemedText style={styles.barcodeData}>{barcodeData.data}</ThemedText>
-            <ThemedText style={styles.barcodeType}>Type: {barcodeData.type}</ThemedText>
-          </ThemedView>
+            <ProductInfo barcodeData={barcodeData} />
         )}
         
         <TouchableOpacity style={styles.scanButton} onPress={handleScan}>

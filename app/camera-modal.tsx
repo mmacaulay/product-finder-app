@@ -1,16 +1,12 @@
 import { useBarcode } from '@/contexts/BarcodeContext';
-import { BarcodeScanningResult, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
+import { BarcodeScanningResult, CameraView, useCameraPermissions } from 'expo-camera';
 import { router } from 'expo-router';
-import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function CameraModal() {
-  const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const { setBarcodeData } = useBarcode();
-
   const handleBarcodeScanned = (barcode: BarcodeScanningResult) => {
-    console.log('Barcode scanned:', barcode);
     setBarcodeData({ data: barcode.data, type: barcode.type });
     router.dismiss();
   };
@@ -39,7 +35,7 @@ export default function CameraModal() {
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing}
+      <CameraView style={styles.camera} facing="back"
         barcodeScannerSettings={{
             barcodeTypes: ["qr", "ean13", "ean8", "upc_a", "upc_e", "code128", "code39", "code93", "codabar"],
         }}
