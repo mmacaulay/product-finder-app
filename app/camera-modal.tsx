@@ -1,12 +1,19 @@
 import { useBarcode } from '@/contexts/BarcodeContext';
 import { BarcodeScanningResult, CameraView, useCameraPermissions } from 'expo-camera';
 import { router } from 'expo-router';
+import { useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function CameraModal() {
   const [permission, requestPermission] = useCameraPermissions();
   const { setBarcodeData } = useBarcode();
+  const hasScannedRef = useRef(false);
+  
   const handleBarcodeScanned = (barcode: BarcodeScanningResult) => {
+    // Prevent multiple scans from firing
+    if (hasScannedRef.current) return;
+    
+    hasScannedRef.current = true;
     setBarcodeData({ data: barcode.data, type: barcode.type });
     router.dismiss();
   };
