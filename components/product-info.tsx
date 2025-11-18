@@ -9,24 +9,34 @@ import { ThemedView } from './themed-view';
 export function ProductInfo({ barcodeData }: { barcodeData: BarcodeData }) {
     const { setProductData } = useProduct();
     const { loading, error, data } = useQuery<ProductData>(GET_PRODUCT, {
-        variables: { barcode: barcodeData.data },
+        variables: { upc: barcodeData.data },
     });
 
     if (loading) return <ActivityIndicator testID="loading" size="large" color="#0000ff" />;
     if (error) return <Text style={styles.errorText}>Error: {error.message}</Text>;
 
-    console.log('data from apollo:',data);
+    const product = data?.productByUpc;
+
+    if (!product) {
+        return (
+            <ThemedView style={styles.resultContainer}>
+                <ThemedText type="subtitle">No product found</ThemedText>
+                <ThemedText style={styles.barcodeType}>UPC: {barcodeData.data}</ThemedText>
+            </ThemedView>
+        );
+    }
+
+    console.log('data from apollo:', data);
     return (
         <ThemedView style={styles.resultContainer}>
-            <ThemedText type="subtitle">Scanned Barcode:</ThemedText>
+            <ThemedText type="subtitle">Scanned UPC:</ThemedText>
             <ThemedText style={styles.barcodeType}>{barcodeData.data}</ThemedText>
             <ThemedText style={styles.barcodeType}>Type: {barcodeData.type}</ThemedText>
 
             <ThemedText type="subtitle">Product Data:</ThemedText>
-            <ThemedText style={styles.barcodeType}>Barcode: {data?.product?.barcode}</ThemedText>
-            <ThemedText style={styles.barcodeType}>Brand: {data?.product?.brand}</ThemedText>
-            <ThemedText style={styles.barcodeType}>Name: {data?.product?.name}</ThemedText>
-            <ThemedText style={styles.barcodeType}>Description:: {data?.product?.description}</ThemedText>
+            <ThemedText style={styles.barcodeType}>UPC: {product.upcCode}</ThemedText>
+            <ThemedText style={styles.barcodeType}>Brand: {product.brand || 'N/A'}</ThemedText>
+            <ThemedText style={styles.barcodeType}>Name: {product.name}</ThemedText>
         </ThemedView>
     );
 }

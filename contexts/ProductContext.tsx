@@ -1,12 +1,12 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 export interface ProductData {
-    product: {
-        barcode: String
-        brand: String
-        name: String
-        description: String
-    }
+    productByUpc: {
+        upcCode: string
+        brand: string | null
+        name: string
+        id: number
+    } | null
   }
   
   interface ProductContextType {

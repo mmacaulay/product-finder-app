@@ -1,28 +1,30 @@
 import { useQuery } from "@apollo/client/react";
 import { BarcodeScanningResult } from "expo-camera";
 import { GET_PRODUCT } from "./queries";
+import { ProductData } from "@/contexts/ProductContext";
 
 export default function productLookup (barcode: BarcodeScanningResult) : ProductInfo {
   console.log('Looking up product:', barcode);
-  const { loading, error,data } = useQuery<ProductInfo>(GET_PRODUCT, {
-    variables: { barcode: barcode.data },
+  const { loading, error, data } = useQuery<ProductData>(GET_PRODUCT, {
+    variables: { upc: barcode.data },
   });
 
-  if (loading) return { barcode: '', brand: '', name: '', description: '' };
-  if (error) return { barcode: '', brand: '', name: '', description: '' };
+  const product = data?.productByUpc;
+
+  if (loading) return { upcCode: '', brand: '', name: '' };
+  if (error) return { upcCode: '', brand: '', name: '' };
+  if (!product) return { upcCode: '', brand: '', name: '' };
   
   console.log('Product data:', data);
   return {
-    barcode: data?.barcode || '',
-    brand: data?.brand || '',
-    name: data?.name || '',
-    description: data?.description || '',
+    upcCode: product.upcCode || '',
+    brand: product.brand || '',
+    name: product.name || '',
   };
 };
 
 export interface ProductInfo {
-  barcode: String
-  brand: String
-  name: String
-  description: String
+  upcCode: string
+  brand: string | null
+  name: string
 }
