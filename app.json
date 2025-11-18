@@ -2,7 +2,7 @@
   "expo": {
     "name": "product-finder-app",
     "slug": "product-finder-app",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "productfinderapp",
@@ -15,8 +15,7 @@
         "ITSAppUsesNonExemptEncryption": false,
         "NSCameraUsageDescription": "We need access to your camera to scan barcodes.",
         "NSAppTransportSecurity": {
-          "NSAllowsArbitraryLoads": true,
-          "NSAllowsLocalNetworking": true
+          "NSAllowsArbitraryLoads": true
         }
       }
     },
