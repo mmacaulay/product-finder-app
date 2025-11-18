@@ -16,6 +16,7 @@ type ProductType {
   brand: String
   createdAt: DateTime!
   id: ID!
+  imageUrl: String
   name: String!
 
   """Get a structured summary of user reviews from the internet"""

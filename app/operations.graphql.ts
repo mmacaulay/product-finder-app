@@ -8,6 +8,7 @@ export const GET_PRODUCT_QUERY = gql`
       upcCode
       brand
       name
+      imageUrl
     }
   }
 `;
