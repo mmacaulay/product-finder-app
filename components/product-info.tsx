@@ -1,13 +1,12 @@
 import { GET_PRODUCT } from '@/app/queries';
 import { BarcodeData } from '@/contexts/BarcodeContext';
-import { ProductData, useProduct } from '@/contexts/ProductContext';
+import { ProductData } from '@/contexts/ProductContext';
 import { useQuery } from '@apollo/client/react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 
 export function ProductInfo({ barcodeData }: { barcodeData: BarcodeData }) {
-    const { setProductData } = useProduct();
     const { loading, error, data } = useQuery<ProductData>(GET_PRODUCT, {
         variables: { upc: barcodeData.data },
     });

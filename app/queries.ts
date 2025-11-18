@@ -1,12 +1,2 @@
-import { gql } from '@apollo/client';
-
-export const GET_PRODUCT = gql`
-  query GetProduct($upc: String!) {
-    productByUpc(upc: $upc) {
-      upcCode
-      brand
-      name
-      id
-    }
-  }
-`;
+// Generated typed document node - provides full type safety
+export { GetProductDocument as GET_PRODUCT } from './__generated__/graphql';

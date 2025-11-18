@@ -1,13 +1,8 @@
+import type { GetProductQuery } from '@/app/__generated__/graphql';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
-export interface ProductData {
-    productByUpc: {
-        upcCode: string
-        brand: string | null
-        name: string
-        id: number
-    } | null
-  }
+// Use the generated type from GraphQL codegen
+export type ProductData = GetProductQuery;
   
   interface ProductContextType {
     productData: ProductData | null;

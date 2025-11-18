@@ -11,7 +11,9 @@
     "lint": "expo lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "codegen:watch": "graphql-codegen --config codegen.ts --watch"
   },
   "dependencies": {
     "@apollo/client": "^4.0.6",
@@ -49,6 +51,7 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^6.0.2",
+    "@graphql-codegen/schema-ast": "^5.0.0",
     "@graphql-codegen/typed-document-node": "^6.1.2",
     "@graphql-codegen/typescript": "^5.0.4",
     "@graphql-codegen/typescript-operations": "^5.0.4",

@@ -1,0 +1,103 @@
+"""
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime
+
+"""
+The `GenericScalar` scalar type represents a generic
+GraphQL scalar value that could be:
+String, Boolean, Int, Float, List or Object.
+"""
+scalar GenericScalar
+
+type ProductType {
+  brand: String
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+
+  """Get a structured summary of user reviews from the internet"""
+  reviewSummary(forceRefresh: Boolean, provider: String): ReviewSummaryType
+
+  """Get a structured safety analysis for this product"""
+  safetyAnalysis(forceRefresh: Boolean, provider: String): SafetyAnalysisType
+  upcCode: String!
+  updatedAt: DateTime!
+}
+
+type Query {
+  allProducts: [ProductType]
+  productById(id: Int!): ProductType
+  productByUpc(upc: String!): ProductType
+}
+
+"""Structured review summary data"""
+type ReviewSummaryType {
+  """Whether this result was served from cache"""
+  cached: Boolean
+
+  """Confidence level: high, medium, or low"""
+  confidence: String
+
+  """Top negative points from reviews"""
+  cons: [String]
+
+  """When this insight was generated"""
+  generatedAt: DateTime
+
+  """Main themes mentioned"""
+  keyThemes: [String]
+
+  """Top positive points from reviews"""
+  pros: [String]
+
+  """LLM provider used"""
+  provider: String
+
+  """Overall sentiment: positive, negative, or mixed"""
+  sentiment: String
+
+  """Sentiment score from 0.0 (negative) to 1.0 (positive)"""
+  sentimentScore: Float
+
+  """Brief overview of reviews"""
+  summary: String
+}
+
+"""Structured safety analysis data"""
+type SafetyAnalysisType {
+  """Common allergens present"""
+  allergens: [String]
+
+  """Whether this result was served from cache"""
+  cached: Boolean
+
+  """Safety certifications or standards"""
+  certifications: [String]
+
+  """Confidence level: high, medium, or low"""
+  confidence: String
+
+  """When this insight was generated"""
+  generatedAt: DateTime
+
+  """List of potentially harmful ingredients"""
+  harmfulIngredients: [GenericScalar]
+
+  """LLM provider used"""
+  provider: String
+
+  """Recent recalls or safety issues"""
+  recalls: [GenericScalar]
+
+  """Who should avoid this product"""
+  recommendations: String
+
+  """Overall risk level: low, medium, or high"""
+  riskLevel: String
+
+  """Brief safety overview"""
+  summary: String
+}

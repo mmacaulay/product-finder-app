@@ -25,6 +25,70 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## GraphQL Code Generation
+
+This project uses GraphQL Code Generator to automatically generate TypeScript types from the GraphQL API schema.
+
+### Development
+
+To generate types from your local dev server:
+
+```bash
+# Make sure your GraphQL API is running at http://127.0.0.1:8000/
+npm run codegen
+```
+
+Or use watch mode during development:
+
+```bash
+npm run codegen:watch
+```
+
+The generated types will be in `app/__generated__/graphql.ts`.
+
+### CI/CD Integration
+
+For CI/CD pipelines, you can configure the schema source in `codegen.ts`:
+
+```typescript
+// For production/staging environments
+schema: process.env.GRAPHQL_ENDPOINT || 'http://127.0.0.1:8000/graphql/'
+```
+
+Then in your CI/CD pipeline:
+
+```bash
+# Example GitHub Actions / CircleCI
+GRAPHQL_ENDPOINT=https://your-api.com/graphql npm run codegen
+```
+
+Or use schema introspection JSON file:
+
+```bash
+# Download schema in CI
+curl -X POST -H "Content-Type: application/json" \
+  --data '{"query": "{ __schema { types { name } } }"}' \
+  https://your-api.com/graphql/ > schema.json
+
+# Update codegen.ts to use the file
+# schema: './schema.json'
+```
+
+### Usage
+
+The generated types provide full type safety for all GraphQL operations:
+
+```typescript
+import { useQuery } from '@apollo/client';
+import { GET_PRODUCT } from './queries';
+import type { GetProductQuery } from './__generated__/graphql';
+
+const { data } = useQuery<GetProductQuery>(GET_PRODUCT, {
+  variables: { upc: '123456' }
+});
+// data is now fully typed!
+```
+
 ## Get a fresh project
 
 When you're ready, run:

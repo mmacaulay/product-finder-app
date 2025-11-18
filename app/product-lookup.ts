@@ -1,11 +1,11 @@
 import { useQuery } from "@apollo/client/react";
-import { BarcodeScanningResult } from "expo-camera";
+import type { BarcodeScanningResult } from "expo-camera";
+import type { GetProductQuery } from "./__generated__/graphql";
 import { GET_PRODUCT } from "./queries";
-import { ProductData } from "@/contexts/ProductContext";
 
-export default function productLookup (barcode: BarcodeScanningResult) : ProductInfo {
+export default function useProductLookup (barcode: BarcodeScanningResult) : ProductInfo {
   console.log('Looking up product:', barcode);
-  const { loading, error, data } = useQuery<ProductData>(GET_PRODUCT, {
+  const { loading, error, data } = useQuery<GetProductQuery>(GET_PRODUCT, {
     variables: { upc: barcode.data },
   });
 
