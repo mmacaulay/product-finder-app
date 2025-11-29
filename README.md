@@ -1,114 +1,100 @@
-# Welcome to your Expo app 👋
+# Product Finder
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile app for scanning product barcodes and getting instant information including AI-powered review summaries and safety analysis.
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Barcode Scanning** - Scan UPC, EAN, QR codes and more using your device camera
+- **Product Lookup** - Fetch product details from a GraphQL API
+- **AI Review Summaries** - Get aggregated review insights with sentiment analysis, pros/cons, and key themes
+- **Safety Analysis** - View risk levels, allergens, certifications, harmful ingredients, and recalls
+- **Search History** - Track previously scanned products
 
-   ```bash
-   npm install
-   ```
+## Screenshots
 
-2. Start the app
+| Find Products | Product Details | Safety Info |
+|--------------|-----------------|-------------|
+| Scan screen  | Product view    | Safety view |
 
-   ```bash
-   npx expo start
-   ```
+## Tech Stack
 
-In the output, you'll find options to open the app in a
+- **Framework**: [Expo](https://expo.dev) (React Native)
+- **Navigation**: [Expo Router](https://docs.expo.dev/router/introduction/) (file-based routing)
+- **Data Fetching**: [Apollo Client](https://www.apollographql.com/docs/react/) with GraphQL
+- **Type Generation**: [GraphQL Code Generator](https://the-guild.dev/graphql/codegen)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Getting Started
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Prerequisites
+
+- Node.js 18+
+- iOS Simulator, Android Emulator, or physical device with [Expo Go](https://expo.dev/go)
+- GraphQL API running (default: `http://localhost:8000/graphql/`)
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Generate GraphQL types (requires API running)
+npm run codegen
+
+# Start the development server
+npx expo start
+```
+
+### Running the App
+
+After starting the dev server, you can:
+
+- Press `i` to open in iOS Simulator
+- Press `a` to open in Android Emulator
+- Scan the QR code with Expo Go on your device
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npx expo start` | Start Expo dev server |
+| `npm run ios` | Run on iOS simulator |
+| `npm run android` | Run on Android emulator |
+| `npm run web` | Run in web browser |
+| `npm test` | Run tests |
+| `npm run lint` | Run ESLint |
+| `npm run codegen` | Generate GraphQL types |
+| `npm run codegen:watch` | Generate types in watch mode |
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `EXPO_PUBLIC_API_URL` | `http://localhost:8000/graphql/` | GraphQL API endpoint |
+| `EXPO_PUBLIC_API_TIMEOUT_MS` | `30000` | API request timeout |
 
 ## GraphQL Code Generation
 
-This project uses GraphQL Code Generator to automatically generate TypeScript types from the GraphQL API schema.
-
-### Development
-
-To generate types from your local dev server:
+This project uses GraphQL Code Generator for full type safety. The schema is fetched from your running API:
 
 ```bash
-# Make sure your GraphQL API is running at http://127.0.0.1:8000/
+# One-time generation
 npm run codegen
-```
 
-Or use watch mode during development:
-
-```bash
+# Watch mode during development
 npm run codegen:watch
 ```
 
-The generated types will be in `app/__generated__/graphql.ts`.
-
-### CI/CD Integration
-
-For CI/CD pipelines, you can configure the schema source in `codegen.ts`:
-
-```typescript
-// For production/staging environments
-schema: process.env.GRAPHQL_ENDPOINT || 'http://127.0.0.1:8000/graphql/'
-```
-
-Then in your CI/CD pipeline:
-
-```bash
-# Example GitHub Actions / CircleCI
-GRAPHQL_ENDPOINT=https://your-api.com/graphql npm run codegen
-```
-
-Or use schema introspection JSON file:
-
-```bash
-# Download schema in CI
-curl -X POST -H "Content-Type: application/json" \
-  --data '{"query": "{ __schema { types { name } } }"}' \
-  https://your-api.com/graphql/ > schema.json
-
-# Update codegen.ts to use the file
-# schema: './schema.json'
-```
-
-### Usage
-
-The generated types provide full type safety for all GraphQL operations:
+Generated types are output to `app/__generated__/graphql.ts`. Import typed document nodes from `app/queries.ts`:
 
 ```typescript
 import { useQuery } from '@apollo/client';
-import { GET_PRODUCT } from './queries';
-import type { GetProductQuery } from './__generated__/graphql';
+import { GET_PRODUCT, type GetProductQuery } from '@/app/queries';
 
 const { data } = useQuery<GetProductQuery>(GET_PRODUCT, {
-  variables: { upc: '123456' }
+  variables: { upc: '012345678901' }
 });
-// data is now fully typed!
 ```
 
-## Get a fresh project
+## License
 
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Private
