@@ -1,18 +1,22 @@
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
-import { Pressable } from 'react-native';
+import { GestureResponderEvent, Pressable } from 'react-native';
 
 import { useHaptic } from '@/hooks/use-haptic';
 
 export function HapticTab(props: BottomTabBarButtonProps) {
   const haptic = useHaptic();
 
+  const handlePressIn = (ev: GestureResponderEvent) => {
+    if (props.onPressIn) {
+      props.onPressIn(ev);
+    }
+    haptic.selection();
+  };
+
   return (
     <Pressable
-      {...(props as any)}
-      onPressIn={(ev) => {
-        props.onPressIn?.(ev);
-        haptic.selection();
-      }}
+      {...props}
+      onPressIn={handlePressIn}
     />
   );
 }

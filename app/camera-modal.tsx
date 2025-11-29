@@ -1,18 +1,27 @@
 import { useBarcode } from '@/contexts/BarcodeContext';
+import { AppColors } from '@/constants/theme';
 import { BarcodeScanningResult, CameraView, useCameraPermissions } from 'expo-camera';
 import { router } from 'expo-router';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function CameraModal() {
   const [permission, requestPermission] = useCameraPermissions();
   const { setBarcodeData } = useBarcode();
   const hasScannedRef = useRef(false);
-  
+
+  // Reset scan flag when component mounts/unmounts
+  useEffect(() => {
+    hasScannedRef.current = false;
+    return () => {
+      hasScannedRef.current = false;
+    };
+  }, []);
+
   const handleBarcodeScanned = (barcode: BarcodeScanningResult) => {
     // Prevent multiple scans from firing
     if (hasScannedRef.current) return;
-    
+
     hasScannedRef.current = true;
     setBarcodeData({ data: barcode.data, type: barcode.type });
     router.dismiss();
@@ -63,7 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: AppColors.black,
   },
   camera: {
     flex: 1,
@@ -78,7 +87,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: AppColors.primary,
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 8,
@@ -86,10 +95,10 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'white',
+    color: AppColors.white,
   },
   cancelButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    backgroundColor: AppColors.overlay.light,
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 8,
@@ -97,12 +106,12 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'white',
+    color: AppColors.white,
   },
   message: {
     textAlign: 'center',
     paddingBottom: 20,
-    color: 'white',
+    color: AppColors.white,
     fontSize: 16,
   },
   buttonRow: {
