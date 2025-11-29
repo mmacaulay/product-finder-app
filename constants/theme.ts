@@ -8,6 +8,28 @@ import { Platform } from 'react-native';
 const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
 
+// Semantic color palette used throughout the app
+export const AppColors = {
+  // Primary colors
+  primary: '#007AFF',
+
+  // Status colors
+  success: '#34C759',
+  error: '#FF3B30',
+  warning: '#FF9500',
+
+  // Neutral colors
+  neutral: '#8E8E93',
+  white: '#FFFFFF',
+  black: '#000000',
+
+  // Transparency overlays
+  overlay: {
+    light: 'rgba(255, 255, 255, 0.3)',
+    dark: 'rgba(0, 0, 0, 0.3)',
+  },
+};
+
 export const Colors = {
   light: {
     text: '#11181C',

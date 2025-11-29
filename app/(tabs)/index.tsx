@@ -7,6 +7,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useBarcode } from '@/contexts/BarcodeContext';
+import { AppColors } from '@/constants/theme';
 
 export default function FindScreen() {
   const { barcodeData } = useBarcode();
@@ -26,7 +27,7 @@ export default function FindScreen() {
           </ThemedText>
           
           <TouchableOpacity style={styles.scanButton} onPress={handleScan}>
-            <IconSymbol name="camera.fill" size={24} color="#fff" />
+            <IconSymbol name="camera.fill" size={24} color={AppColors.white} />
             <ThemedText style={styles.scanButtonText}>Scan</ThemedText>
           </TouchableOpacity>
         </ThemedView>
@@ -57,13 +58,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#007AFF',
+    backgroundColor: AppColors.primary,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 12,
     gap: 8,
     marginTop: 16,
-    shadowColor: '#000',
+    shadowColor: AppColors.black,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   scanButtonText: {
-    color: '#fff',
+    color: AppColors.white,
     fontSize: 16,
     fontWeight: '600',
   },

@@ -1,3 +1,4 @@
+import { AppColors } from '@/constants/theme';
 import { useState } from 'react';
 import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 import { ThemedText } from './themed-text';
@@ -17,13 +18,9 @@ export function ProductBasicInfo({ product }: ProductBasicInfoProps) {
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState<string | null>(null);
 
-  const handleImageError = (error: any) => {
-    console.log('Image load error:', error);
-    console.log('Image URL:', product.imageUrl);
-    console.log('Error details:', JSON.stringify(error.nativeEvent, null, 2));
-    
+  const handleImageError = (error: { nativeEvent?: { error?: string } }) => {
     setImageLoading(false);
-    setImageError(error.nativeEvent?.error || 'Unknown error');
+    setImageError(error.nativeEvent?.error || 'Failed to load product image');
   };
 
   return (
@@ -33,13 +30,13 @@ export function ProductBasicInfo({ product }: ProductBasicInfoProps) {
         <View style={styles.imageContainer}>
           {imageLoading && !imageError && (
             <View style={styles.imageLoadingContainer}>
-              <ActivityIndicator size="large" color="#007AFF" />
+              <ActivityIndicator size="large" color={AppColors.primary} />
               <ThemedText style={styles.imageLoadingText}>Loading image...</ThemedText>
             </View>
           )}
           {imageError && (
             <View style={styles.imageErrorContainer}>
-              <IconSymbol name="exclamationmark.triangle" size={48} color="#FF3B30" />
+              <IconSymbol name="exclamationmark.triangle" size={48} color={AppColors.error} />
               <ThemedText style={styles.imageErrorText}>Failed to load image</ThemedText>
               <ThemedText style={styles.imageUrlText} selectable>{product.imageUrl}</ThemedText>
               <ThemedText style={styles.imageErrorDetails} selectable>Error: {imageError}</ThemedText>
@@ -51,11 +48,9 @@ export function ProductBasicInfo({ product }: ProductBasicInfoProps) {
               style={[styles.productImage, imageLoading && styles.hiddenImage]}
               resizeMode="contain"
               onLoadStart={() => {
-                console.log('Image load started:', product.imageUrl);
                 setImageLoading(true);
               }}
               onLoadEnd={() => {
-                console.log('Image loaded successfully:', product.imageUrl);
                 setImageLoading(false);
               }}
               onError={handleImageError}
@@ -66,7 +61,7 @@ export function ProductBasicInfo({ product }: ProductBasicInfoProps) {
 
       <View style={styles.section}>
         <View style={styles.iconRow}>
-          <IconSymbol name="barcode.viewfinder" size={24} color="#007AFF" />
+          <IconSymbol name="barcode.viewfinder" size={24} color={AppColors.primary} />
           <ThemedText type="subtitle" style={styles.sectionTitle}>Product Information</ThemedText>
         </View>
 
@@ -137,7 +132,7 @@ const styles = StyleSheet.create({
   },
   imageErrorText: {
     fontSize: 14,
-    color: '#FF3B30',
+    color: AppColors.error,
     fontWeight: '600',
   },
   imageUrlText: {
