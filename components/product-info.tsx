@@ -46,9 +46,13 @@ export function ProductInfo({ barcodeData }: { barcodeData: BarcodeData }) {
 
     if (!product) {
         return (
-            <ThemedView style={styles.resultContainer}>
+            <ThemedView style={styles.errorContainer}>
+                <IconSymbol name="exclamationmark.circle.fill" size={48} color={AppColors.primary} />
                 <ThemedText type="subtitle">No product found</ThemedText>
                 <ThemedText style={styles.barcodeType}>UPC: {barcodeData.data}</ThemedText>
+                <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+                    <ThemedText style={styles.backButtonText}>Go Back</ThemedText>
+                </TouchableOpacity>
             </ThemedView>
         );
     }
@@ -78,8 +82,9 @@ export function ProductInfo({ barcodeData }: { barcodeData: BarcodeData }) {
             </View>
 
             {/* Content */}
-            <ScrollView 
+            <ScrollView
                 style={styles.scrollContainer}
+                contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
                 <ProductBasicInfo product={product} />
@@ -183,6 +188,9 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
       flex: 1,
+    },
+    scrollContent: {
+      paddingBottom: 120,
     },
   });
   

@@ -28,14 +28,22 @@ npm run codegen:watch       # Watch mode for codegen
 This is an Expo React Native app for scanning product barcodes and displaying product information via a GraphQL API.
 
 ### Routing (Expo Router - file-based)
-- `app/_layout.tsx` - Root layout with Apollo client setup and context providers
-- `app/(tabs)/` - Tab navigation (Find, History)
+- `app/_layout.tsx` - Root layout with Firebase Auth, Apollo client, and context providers
+- `app/index.tsx` - Root redirect based on auth state
+- `app/(auth)/` - Authentication flow (login, signup)
+- `app/(tabs)/` - Tab navigation (Find, History) - protected routes
 - `app/camera-modal.tsx` - Modal for barcode scanning
 
+### Authentication Flow
+1. **Firebase Auth** - Email/password authentication via Firebase
+2. **AuthContext** (`contexts/AuthContext.tsx`) - Manages auth state, sign in/up/out
+3. **Protected Routes** - `app/index.tsx` redirects to login if not authenticated
+4. **Apollo Auth** - Firebase ID token automatically added to all GraphQL requests via auth link
+
 ### Data Flow
-1. **BarcodeContext** (`contexts/BarcodeContext.tsx`) - Stores scanned barcode data
-2. **ProductContext** (`contexts/ProductContext.tsx`) - Stores fetched product data (uses generated GraphQL types)
-3. Components fetch product data via Apollo `useQuery` with generated typed document nodes
+1. **AuthContext** - User authentication state and token management
+2. **BarcodeContext** (`contexts/BarcodeContext.tsx`) - Stores scanned barcode data
+3. Components fetch product data via Apollo `useQuery` with authenticated requests
 
 ### GraphQL
 - Queries defined in `app/operations.graphql.ts` using `gql` tag
@@ -51,4 +59,11 @@ This is an Expo React Native app for scanning product barcodes and displaying pr
 
 ### Environment
 - API URL configured via `EXPO_PUBLIC_API_URL` env var (defaults to localhost:8000)
-- Configuration in `constants/env.ts`
+- Firebase config requires 6 env vars (see `.env.example`)
+- Configuration in `constants/env.ts` and `config/firebase.ts`
+
+### Important Notes
+- All GraphQL requests include Firebase auth token in `Authorization` header
+- User must be logged in to access main app screens
+- Firebase persistence uses Expo SecureStore (encrypted) for session management
+- Works with Expo Go without native rebuild
