@@ -25,7 +25,7 @@ export default function HistoryScreen() {
             try {
               await logOut();
               router.replace('/(auth)/login');
-            } catch (error) {
+            } catch {
               Alert.alert('Error', 'Failed to sign out. Please try again.');
             }
           },

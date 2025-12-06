@@ -122,7 +122,7 @@ export default function LoginScreen() {
           </TouchableOpacity>
 
           <ThemedView style={styles.signupContainer}>
-            <ThemedText style={styles.signupText}>Don't have an account? </ThemedText>
+            <ThemedText style={styles.signupText}>Don&apos;t have an account? </ThemedText>
             <TouchableOpacity onPress={handleSignUp} disabled={loading}>
               <ThemedText style={styles.signupLink}>Sign Up</ThemedText>
             </TouchableOpacity>
