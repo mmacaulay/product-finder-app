@@ -1,6 +1,6 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getAuth, initializeAuth } from 'firebase/auth';
-import { getExpoSecureStorePersistence } from './firebasePersistence';
+import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 // Firebase configuration from environment variables
 const firebaseConfig = {
@@ -33,18 +33,19 @@ try {
   validateFirebaseConfig();
 
   // Get existing app or initialize new one
-  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+  const isFirstInit = getApps().length === 0;
+  app = isFirstInit ? initializeApp(firebaseConfig) : getApp();
 
-  // Initialize Auth with Expo SecureStore persistence
-  if (getApps().length === 0) {
+  // Initialize Auth with AsyncStorage persistence
+  if (isFirstInit) {
     auth = initializeAuth(app, {
-      persistence: getExpoSecureStorePersistence(),
+      persistence: getReactNativePersistence(ReactNativeAsyncStorage),
     });
   } else {
     auth = getAuth(app);
   }
 } catch (error) {
-  console.error('Firebase initialization error:', error);
+  console.error('[Firebase] Initialization error:', error);
   throw error;
 }
 
