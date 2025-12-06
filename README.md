@@ -4,8 +4,9 @@ A React Native mobile app for scanning product barcodes and getting instant info
 
 ## Features
 
+- **Firebase Authentication** - Secure email/password authentication
 - **Barcode Scanning** - Scan UPC, EAN, QR codes and more using your device camera
-- **Product Lookup** - Fetch product details from a GraphQL API
+- **Product Lookup** - Fetch product details from a GraphQL API with authenticated requests
 - **AI Review Summaries** - Get aggregated review insights with sentiment analysis, pros/cons, and key themes
 - **Safety Analysis** - View risk levels, allergens, certifications, harmful ingredients, and recalls
 - **Search History** - Track previously scanned products
@@ -67,10 +68,18 @@ After starting the dev server, you can:
 
 ## Environment Variables
 
+Create a `.env` file in the root directory (use `.env.example` as a template):
+
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `EXPO_PUBLIC_API_URL` | `http://localhost:8000/graphql/` | GraphQL API endpoint |
 | `EXPO_PUBLIC_API_TIMEOUT_MS` | `30000` | API request timeout |
+| `EXPO_PUBLIC_FIREBASE_API_KEY` | - | Firebase API key (required) |
+| `EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN` | - | Firebase auth domain (required) |
+| `EXPO_PUBLIC_FIREBASE_PROJECT_ID` | - | Firebase project ID (required) |
+| `EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET` | - | Firebase storage bucket |
+| `EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | - | Firebase messaging sender ID |
+| `EXPO_PUBLIC_FIREBASE_APP_ID` | - | Firebase app ID (required) |
 
 ## GraphQL Code Generation
 
