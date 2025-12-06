@@ -63,3 +63,12 @@ jest.mock('@/contexts/BarcodeContext', () => ({
   })),
 }));
 
+// Mock AuthContext
+jest.mock('@/contexts/AuthContext', () => ({
+  useAuth: jest.fn(() => ({
+    user: null,
+    logOut: jest.fn(),
+  })),
+  AuthProvider: ({ children }: { children: React.ReactNode }) => children,
+}));
+
