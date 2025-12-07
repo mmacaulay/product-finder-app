@@ -22,11 +22,12 @@ export default function CameraModal() {
 
     hasScannedRef.current = true;
 
-    // Dismiss the modal first
+    // Dismiss the modal and navigate after a brief delay to ensure clean navigation state
     router.dismiss();
 
-    // Navigate to the product screen with the scanned UPC
-    router.push(`/(tabs)/(find)/product?upc=${barcode.data}`);
+    setTimeout(() => {
+      router.push(`/(tabs)/(find)/product?upc=${barcode.data}`);
+    }, 100);
   };
 
   if (!permission) {
@@ -53,18 +54,19 @@ export default function CameraModal() {
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing="back"
+      <CameraView
+        style={styles.camera}
+        facing="back"
         barcodeScannerSettings={{
-            barcodeTypes: ["qr", "ean13", "ean8", "upc_a", "upc_e", "code128", "code39", "code93", "codabar"],
+          barcodeTypes: ["qr", "ean13", "ean8", "upc_a", "upc_e", "code128", "code39", "code93", "codabar"],
         }}
         onBarcodeScanned={handleBarcodeScanned}
-        >
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.cancelButton} onPress={() => router.dismiss()}>
-            <Text style={styles.cancelButtonText}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView>
+      />
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.cancelButton} onPress={() => router.dismiss()}>
+          <Text style={styles.cancelButtonText}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -81,12 +83,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   buttonContainer: {
-    flex: 1,
+    position: 'absolute',
+    bottom: 64,
+    left: 0,
+    right: 0,
     flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
     justifyContent: 'center',
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   button: {
     backgroundColor: AppColors.primary,

@@ -17,10 +17,16 @@ describe('CameraModal', () => {
   beforeEach(() => {
     // Reset all mocks before each test
     jest.clearAllMocks();
+    jest.useFakeTimers();
 
     // Setup router mock implementations
     (router.dismiss as jest.Mock) = mockRouterDismiss;
     (router.push as jest.Mock) = mockRouterPush;
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
   });
 
   describe('Permission States', () => {
@@ -109,6 +115,10 @@ describe('CameraModal', () => {
       fireEvent(cameraView, 'onBarcodeScanned', mockBarcodeData);
 
       expect(mockRouterDismiss).toHaveBeenCalledTimes(1);
+
+      // Advance timers to trigger the setTimeout
+      jest.advanceTimersByTime(100);
+
       expect(mockRouterPush).toHaveBeenCalledWith('/(tabs)/(find)/product?upc=1234567890123');
     });
 
@@ -131,10 +141,14 @@ describe('CameraModal', () => {
       fireEvent(cameraView, 'onBarcodeScanned', mockBarcodeData2);
       fireEvent(cameraView, 'onBarcodeScanned', mockBarcodeData1);
 
+      expect(mockRouterDismiss).toHaveBeenCalledTimes(1);
+
+      // Advance timers to trigger the setTimeout
+      jest.advanceTimersByTime(100);
+
       // Only the first scan should be processed
       expect(mockRouterPush).toHaveBeenCalledTimes(1);
       expect(mockRouterPush).toHaveBeenCalledWith('/(tabs)/(find)/product?upc=1234567890123');
-      expect(mockRouterDismiss).toHaveBeenCalledTimes(1);
     });
 
     it('navigates to product screen with correct UPC', () => {
@@ -147,6 +161,9 @@ describe('CameraModal', () => {
       };
 
       fireEvent(cameraView, 'onBarcodeScanned', mockBarcodeData);
+
+      // Advance timers to trigger the setTimeout
+      jest.advanceTimersByTime(100);
 
       expect(mockRouterPush).toHaveBeenCalledWith('/(tabs)/(find)/product?upc=7896543210987');
     });
@@ -169,6 +186,10 @@ describe('CameraModal', () => {
         fireEvent(cameraView, 'onBarcodeScanned', barcodeData);
 
         expect(mockRouterDismiss).toHaveBeenCalledTimes(1);
+
+        // Advance timers to trigger the setTimeout
+        jest.advanceTimersByTime(100);
+
         expect(mockRouterPush).toHaveBeenCalledWith(`/(tabs)/(find)/product?upc=${barcodeData.data}`);
       });
     });
