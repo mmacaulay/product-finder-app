@@ -16,13 +16,16 @@ export function CollapsibleReviews({ upcCode }: CollapsibleReviewsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const theme = useColorScheme() ?? 'light';
   const [loadReviews, { loading, error, data, called }] = useLazyQuery<GetProductReviewsQuery>(
-    GET_PRODUCT_REVIEWS
+    GET_PRODUCT_REVIEWS,
+    {
+      fetchPolicy: 'cache-first', // Use cached data when available
+    }
   );
 
   const handleToggle = () => {
     const newIsOpen = !isOpen;
     setIsOpen(newIsOpen);
-    
+
     // Load data when opening for the first time
     if (newIsOpen && !called) {
       loadReviews({ variables: { upc: upcCode } });

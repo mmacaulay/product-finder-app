@@ -20,6 +20,7 @@ export function ProductDetailScreen({ upc }: ProductDetailScreenProps) {
     const { addToHistory } = useHistory();
     const { loading, error, data } = useQuery<GetProductQuery>(GET_PRODUCT, {
         variables: { upc },
+        fetchPolicy: 'cache-first', // Use cached data when available
     });
 
     // Add to history when we get a successful response (whether product found or not)
