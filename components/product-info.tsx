@@ -1,7 +1,9 @@
 import { GET_PRODUCT, type GetProductQuery } from '@/graphql/queries';
 import { BarcodeData, useBarcode } from '@/contexts/BarcodeContext';
+import { useHistory } from '@/contexts/HistoryContext';
 import { AppColors } from '@/constants/theme';
 import { useQuery } from '@apollo/client/react';
+import { useEffect } from 'react';
 import { ActivityIndicator, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { CollapsibleReviews } from './collapsible-reviews';
 import { CollapsibleSafety } from './collapsible-safety';
@@ -12,9 +14,26 @@ import { IconSymbol } from './ui/icon-symbol';
 
 export function ProductInfo({ barcodeData }: { barcodeData: BarcodeData }) {
     const { setBarcodeData } = useBarcode();
+    const { addToHistory } = useHistory();
     const { loading, error, data } = useQuery<GetProductQuery>(GET_PRODUCT, {
         variables: { upc: barcodeData.data },
     });
+
+    // Add to history when we get a successful response (whether product found or not)
+    useEffect(() => {
+        if (data !== undefined && !loading && !error) {
+            const product = data.productByUpc;
+            addToHistory({
+                upc: barcodeData.data,
+                product: product ? {
+                    name: product.name,
+                    brand: product.brand,
+                    upcCode: product.upcCode,
+                    imageUrl: product.imageUrl,
+                } : null,
+            });
+        }
+    }, [data, loading, error, barcodeData.data, addToHistory]);
 
     const handleBack = () => {
         setBarcodeData(null);
