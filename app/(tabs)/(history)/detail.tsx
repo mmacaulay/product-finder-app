@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { ProductDetailScreen } from '@/components/product-detail-screen';
+import { HistoryProductDetailScreen } from '@/components/history-product-detail-screen';
 import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
 import { StyleSheet } from 'react-native';
@@ -19,7 +19,7 @@ export default function ProductScreen() {
 
   return (
     <ThemedView style={[styles.container, { paddingTop: insets.top }]}>
-      <ProductDetailScreen upc={upc} />
+      <HistoryProductDetailScreen upc={upc} />
     </ThemedView>
   );
 }

@@ -2,7 +2,6 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { HistoryItem } from '@/components/history-item';
 import { useHistory } from '@/contexts/HistoryContext';
-import { router } from 'expo-router';
 import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { AppColors } from '@/constants/theme';
@@ -11,11 +10,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function HistoryScreen() {
   const { history, loading } = useHistory();
   const insets = useSafeAreaInsets();
-
-  const handleItemPress = (upc: string) => {
-    // Navigate to the product screen in the history stack
-    router.push(`/(tabs)/(history)/product?upc=${upc}`);
-  };
 
   if (loading) {
     return (
@@ -54,12 +48,7 @@ export default function HistoryScreen() {
       <FlatList
         data={history}
         keyExtractor={(item) => `${item.upc}-${item.timestamp}`}
-        renderItem={({ item }) => (
-          <HistoryItem
-            item={item}
-            onPress={() => handleItemPress(item.upc)}
-          />
-        )}
+        renderItem={({ item }) => <HistoryItem item={item} />}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />
