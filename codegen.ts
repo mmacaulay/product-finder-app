@@ -5,12 +5,12 @@ const config: CodegenConfig = {
   schema: 'http://127.0.0.1:8000/graphql/',
   
   // Documents - where your GraphQL queries, mutations, and fragments are located
-  documents: ['app/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}'],
-  
+  documents: ['graphql/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}'],
+
   // Generate TypeScript types and operations
   generates: {
     // Main generated file with types and typed document nodes
-    './app/__generated__/graphql.ts': {
+    './graphql/__generated__/graphql.ts': {
       plugins: [
         'typescript',                    // Generate TypeScript types from schema
         'typescript-operations',         // Generate TypeScript types for operations
@@ -24,9 +24,9 @@ const config: CodegenConfig = {
         useTypeImports: true,
       },
     },
-    
+
     // Optional: Generate schema as a separate introspection file for reference
-    './app/__generated__/schema.graphql': {
+    './graphql/__generated__/schema.graphql': {
       plugins: ['schema-ast'],
     },
   },

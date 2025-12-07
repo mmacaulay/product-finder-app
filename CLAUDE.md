@@ -46,9 +46,9 @@ This is an Expo React Native app for scanning product barcodes and displaying pr
 3. Components fetch product data via Apollo `useQuery` with authenticated requests
 
 ### GraphQL
-- Queries defined in `app/operations.graphql.ts` using `gql` tag
-- Generated types in `app/__generated__/graphql.ts` (auto-generated, do not edit)
-- Re-exported as typed document nodes from `app/queries.ts`
+- Queries defined in `graphql/operations.graphql.ts` using `gql` tag
+- Generated types in `graphql/__generated__/graphql.ts` (auto-generated, do not edit)
+- Re-exported as typed document nodes from `graphql/queries.ts`
 - Config in `codegen.ts` - schema fetched from `http://127.0.0.1:8000/graphql/`
 
 ### Key Components
