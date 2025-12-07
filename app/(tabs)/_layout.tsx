@@ -30,6 +30,8 @@ export default function TabLayout() {
         options={{
           title: 'Find',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="magnifyingglass" color={color} />,
+          lazy: true,
+          freezeOnBlur: true,
         }}
       />
       <Tabs.Screen
@@ -37,6 +39,7 @@ export default function TabLayout() {
         options={{
           title: 'History',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="clock" color={color} />,
+          lazy: true,
         }}
       />
       <Tabs.Screen
