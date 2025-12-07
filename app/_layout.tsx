@@ -1,11 +1,12 @@
 import { API_TIMEOUT_MS, API_URL } from "@/constants/env";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { HistoryProvider } from "@/contexts/HistoryContext";
-import { ApolloClient, HttpLink, InMemoryCache, ApolloLink } from "@apollo/client";
+import { ApolloClient, HttpLink, ApolloLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { ApolloProvider } from "@apollo/client/react";
 import { Stack } from "expo-router";
 import { auth } from "@/config/firebase";
+import { createApolloCache } from "@/config/apollo-cache";
 
 export default function RootLayout() {
 
@@ -43,7 +44,7 @@ export default function RootLayout() {
   });
 
   const client = new ApolloClient({
-    cache: new InMemoryCache(),
+    cache: createApolloCache(),
     link: ApolloLink.from([authLink, httpLink]),
   });
 

@@ -16,13 +16,16 @@ export function CollapsibleSafety({ upcCode }: CollapsibleSafetyProps) {
   const [isOpen, setIsOpen] = useState(false);
   const theme = useColorScheme() ?? 'light';
   const [loadSafety, { loading, error, data, called }] = useLazyQuery<GetProductSafetyQuery>(
-    GET_PRODUCT_SAFETY
+    GET_PRODUCT_SAFETY,
+    {
+      fetchPolicy: 'cache-first', // Use cached data when available
+    }
   );
 
   const handleToggle = () => {
     const newIsOpen = !isOpen;
     setIsOpen(newIsOpen);
-    
+
     // Load data when opening for the first time
     if (newIsOpen && !called) {
       loadSafety({ variables: { upc: upcCode } });
