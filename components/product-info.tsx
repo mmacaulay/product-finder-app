@@ -1,4 +1,4 @@
-import { GET_PRODUCT, type GetProductQuery } from '@/app/queries';
+import { GET_PRODUCT, type GetProductQuery } from '@/graphql/queries';
 import { BarcodeData, useBarcode } from '@/contexts/BarcodeContext';
 import { AppColors } from '@/constants/theme';
 import { useQuery } from '@apollo/client/react';

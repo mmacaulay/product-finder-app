@@ -26,9 +26,9 @@ The configuration is in `codegen.ts` at the project root.
 ### Current Setup
 
 - **Schema Source**: `http://127.0.0.1:8000/graphql/` (local dev server)
-- **Documents**: All `.ts` and `.tsx` files in `app/` and `components/`
-- **Output**: `app/__generated__/graphql.ts`
-- **Additional Output**: `app/__generated__/schema.graphql` (for reference)
+- **Documents**: All `.ts` and `.tsx` files in `graphql/` and `components/`
+- **Output**: `graphql/__generated__/graphql.ts`
+- **Additional Output**: `graphql/__generated__/schema.graphql` (for reference)
 
 ### Plugins Used
 
@@ -83,14 +83,14 @@ See `.github/workflows/codegen-example.yml.disabled` for a complete example work
 
 ## Generated Files
 
-### `app/__generated__/graphql.ts`
+### `graphql/__generated__/graphql.ts`
 
 Contains:
 - All GraphQL schema types (e.g., `ProductType`, `Query`, etc.)
 - Operation types for your queries/mutations (e.g., `GetProductQuery`, `GetProductQueryVariables`)
 - Typed document nodes (e.g., `GetProductDocument`)
 
-### `app/__generated__/schema.graphql`
+### `graphql/__generated__/schema.graphql`
 
 A readable GraphQL schema file for reference. This is useful for:
 - Understanding the API structure
@@ -131,8 +131,8 @@ const { data } = useQuery<ProductData>(GET_PRODUCT, {
 ### After Code Generation
 
 ```typescript
-import { GET_PRODUCT } from './queries'; // Exports GetProductDocument
-import type { GetProductQuery } from './__generated__/graphql';
+import { GET_PRODUCT } from '@/graphql/queries'; // Exports GetProductDocument
+import type { GetProductQuery } from '@/graphql/__generated__/graphql';
 
 // Types are automatically generated and imported
 const { data } = useQuery<GetProductQuery>(GET_PRODUCT, {
@@ -180,7 +180,7 @@ If you get type errors after regeneration:
 
 ## Best Practices
 
-1. **Commit Generated Files**: Commit `app/__generated__/` to version control so team members don't need to run codegen immediately
+1. **Commit Generated Files**: Commit `graphql/__generated__/` to version control so team members don't need to run codegen immediately
 2. **Run Before Build**: Add codegen as a prebuild step in your deployment pipeline
 3. **Watch Mode**: Use `npm run codegen:watch` during active development
 4. **Regular Updates**: Regenerate types regularly when the API changes

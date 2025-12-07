@@ -1,4 +1,4 @@
-import { GET_PRODUCT_REVIEWS, type GetProductReviewsQuery } from '@/app/queries';
+import { GET_PRODUCT_REVIEWS, type GetProductReviewsQuery } from '@/graphql/queries';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useLazyQuery } from '@apollo/client/react';

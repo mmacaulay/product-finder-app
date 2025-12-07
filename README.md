@@ -93,11 +93,11 @@ npm run codegen
 npm run codegen:watch
 ```
 
-Generated types are output to `app/__generated__/graphql.ts`. Import typed document nodes from `app/queries.ts`:
+Generated types are output to `graphql/__generated__/graphql.ts`. Import typed document nodes from `graphql/queries.ts`:
 
 ```typescript
 import { useQuery } from '@apollo/client';
-import { GET_PRODUCT, type GetProductQuery } from '@/app/queries';
+import { GET_PRODUCT, type GetProductQuery } from '@/graphql/queries';
 
 const { data } = useQuery<GetProductQuery>(GET_PRODUCT, {
   variables: { upc: '012345678901' }
