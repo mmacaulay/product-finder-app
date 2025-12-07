@@ -5,13 +5,15 @@ import { Image } from 'expo-image';
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 import { IconSymbol } from './ui/icon-symbol';
+import { useRouter } from 'expo-router';
 
 interface HistoryItemProps {
   item: HistoryItemType;
-  onPress: () => void;
 }
 
-export function HistoryItem({ item, onPress }: HistoryItemProps) {
+export function HistoryItem({ item }: HistoryItemProps) {
+  const router = useRouter();
+
   const formatTimeAgo = (timestamp: number): string => {
     const now = Date.now();
     const diffInSeconds = Math.floor((now - timestamp) / 1000);
@@ -28,13 +30,20 @@ export function HistoryItem({ item, onPress }: HistoryItemProps) {
 
   const productNotFound = item.product === null;
 
+  const handlePress = () => {
+    router.push({
+      pathname: '/(tabs)/(history)/detail',
+      params: { upc: item.upc }
+    });
+  };
+
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={onPress}
       activeOpacity={0.7}
+      onPress={handlePress}
     >
-      <ThemedView style={styles.content}>
+        <ThemedView style={styles.content}>
         {/* Product Image or Icon */}
         <View style={styles.imageContainer}>
           {item.product?.imageUrl ? (
