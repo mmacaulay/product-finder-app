@@ -1,13 +1,13 @@
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
   default: {
-    getItem: jest.fn(),
-    setItem: jest.fn(),
-    removeItem: jest.fn(),
-    multiGet: jest.fn(),
-    multiSet: jest.fn(),
-    multiRemove: jest.fn(),
-    clear: jest.fn(),
+    getItem: jest.fn(() => Promise.resolve(null)),
+    setItem: jest.fn(() => Promise.resolve()),
+    removeItem: jest.fn(() => Promise.resolve()),
+    multiGet: jest.fn(() => Promise.resolve([])),
+    multiSet: jest.fn(() => Promise.resolve()),
+    multiRemove: jest.fn(() => Promise.resolve()),
+    clear: jest.fn(() => Promise.resolve()),
     getAllKeys: jest.fn(() => Promise.resolve([])),
   },
 }));
@@ -40,12 +40,14 @@ jest.mock('expo-router', () => ({
   router: {
     dismiss: jest.fn(),
     push: jest.fn(),
+    navigate: jest.fn(),
     replace: jest.fn(),
     back: jest.fn(),
   },
   useRouter: jest.fn(() => ({
     dismiss: jest.fn(),
     push: jest.fn(),
+    navigate: jest.fn(),
     replace: jest.fn(),
     back: jest.fn(),
   })),
