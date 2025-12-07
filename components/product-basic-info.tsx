@@ -1,6 +1,7 @@
 import { AppColors } from '@/constants/theme';
 import { useState } from 'react';
-import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { Image } from 'expo-image';
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 import { IconSymbol } from './ui/icon-symbol';
@@ -46,11 +47,12 @@ export function ProductBasicInfo({ product }: ProductBasicInfoProps) {
             <Image
               source={{ uri: product.imageUrl }}
               style={[styles.productImage, imageLoading && styles.hiddenImage]}
-              resizeMode="contain"
+              contentFit="contain"
+              cachePolicy="memory-disk"
               onLoadStart={() => {
                 setImageLoading(true);
               }}
-              onLoadEnd={() => {
+              onLoad={() => {
                 setImageLoading(false);
               }}
               onError={handleImageError}
