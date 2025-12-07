@@ -1,6 +1,7 @@
 import { HistoryItem as HistoryItemType } from '@/contexts/HistoryContext';
 import { AppColors } from '@/constants/theme';
-import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image } from 'expo-image';
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 import { IconSymbol } from './ui/icon-symbol';
@@ -40,7 +41,8 @@ export function HistoryItem({ item, onPress }: HistoryItemProps) {
             <Image
               source={{ uri: item.product.imageUrl }}
               style={styles.productImage}
-              resizeMode="cover"
+              contentFit="cover"
+              cachePolicy="memory-disk"
             />
           ) : (
             <View style={[styles.iconPlaceholder, productNotFound && styles.iconPlaceholderError]}>
