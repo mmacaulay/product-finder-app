@@ -26,14 +26,14 @@ export default function TabLayout() {
         }),
       }}>
       <Tabs.Screen
-        name="index"
+        name="(find)"
         options={{
           title: 'Find',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="magnifyingglass" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="history"
+        name="(history)"
         options={{
           title: 'History',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="clock" color={color} />,

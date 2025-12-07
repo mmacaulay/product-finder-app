@@ -1,6 +1,5 @@
 import { API_TIMEOUT_MS, API_URL } from "@/constants/env";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { BarcodeProvider } from "@/contexts/BarcodeContext";
 import { HistoryProvider } from "@/contexts/HistoryContext";
 import { ApolloClient, HttpLink, InMemoryCache, ApolloLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
@@ -51,21 +50,19 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <ApolloProvider client={client}>
-        <BarcodeProvider>
-          <HistoryProvider>
-            <Stack>
-              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="camera-modal"
-                options={{
-                  headerTitle: 'Scan Barcode',
-                  presentation: 'modal'
-                }}
-              />
-            </Stack>
-          </HistoryProvider>
-        </BarcodeProvider>
+        <HistoryProvider>
+          <Stack>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="camera-modal"
+              options={{
+                headerTitle: 'Scan Barcode',
+                presentation: 'modal'
+              }}
+            />
+          </Stack>
+        </HistoryProvider>
       </ApolloProvider>
     </AuthProvider>
   );

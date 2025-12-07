@@ -1,5 +1,4 @@
 import { GET_PRODUCT, type GetProductQuery } from '@/graphql/queries';
-import { BarcodeData, useBarcode } from '@/contexts/BarcodeContext';
 import { useHistory } from '@/contexts/HistoryContext';
 import { AppColors } from '@/constants/theme';
 import { useQuery } from '@apollo/client/react';
@@ -11,12 +10,16 @@ import { ProductBasicInfo } from './product-basic-info';
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 import { IconSymbol } from './ui/icon-symbol';
+import { router } from 'expo-router';
 
-export function ProductInfo({ barcodeData }: { barcodeData: BarcodeData }) {
-    const { setBarcodeData } = useBarcode();
+interface ProductDetailScreenProps {
+  upc: string;
+}
+
+export function ProductDetailScreen({ upc }: ProductDetailScreenProps) {
     const { addToHistory } = useHistory();
     const { loading, error, data } = useQuery<GetProductQuery>(GET_PRODUCT, {
-        variables: { upc: barcodeData.data },
+        variables: { upc },
     });
 
     // Add to history when we get a successful response (whether product found or not)
@@ -24,7 +27,7 @@ export function ProductInfo({ barcodeData }: { barcodeData: BarcodeData }) {
         if (data !== undefined && !loading && !error) {
             const product = data.productByUpc;
             addToHistory({
-                upc: barcodeData.data,
+                upc,
                 product: product ? {
                     name: product.name,
                     brand: product.brand,
@@ -33,10 +36,10 @@ export function ProductInfo({ barcodeData }: { barcodeData: BarcodeData }) {
                 } : null,
             });
         }
-    }, [data, loading, error, barcodeData.data, addToHistory]);
+    }, [data, loading, error, upc, addToHistory]);
 
     const handleBack = () => {
-        setBarcodeData(null);
+        router.back();
     };
 
     if (loading) {
@@ -68,7 +71,7 @@ export function ProductInfo({ barcodeData }: { barcodeData: BarcodeData }) {
             <ThemedView style={styles.errorContainer}>
                 <IconSymbol name="exclamationmark.circle.fill" size={48} color={AppColors.primary} />
                 <ThemedText type="subtitle">No product found</ThemedText>
-                <ThemedText style={styles.barcodeType}>UPC: {barcodeData.data}</ThemedText>
+                <ThemedText style={styles.barcodeType}>UPC: {upc}</ThemedText>
                 <TouchableOpacity style={styles.backButton} onPress={handleBack}>
                     <ThemedText style={styles.backButtonText}>Go Back</ThemedText>
                 </TouchableOpacity>
@@ -88,10 +91,10 @@ export function ProductInfo({ barcodeData }: { barcodeData: BarcodeData }) {
                     <IconSymbol
                         name={Platform.OS === 'ios' ? 'chevron.left' : 'arrow.left'}
                         size={24}
-                        color={AppColors.primary} 
+                        color={AppColors.primary}
                     />
                     <ThemedText style={styles.headerBackButtonText}>
-                        {Platform.OS === 'ios' ? 'Find Products' : ''}
+                        {Platform.OS === 'ios' ? 'Back' : ''}
                     </ThemedText>
                 </TouchableOpacity>
                 <ThemedText style={styles.headerTitle} numberOfLines={1}>
@@ -133,7 +136,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       paddingHorizontal: 8,
       paddingVertical: 4,
-      minWidth: Platform.OS === 'ios' ? 120 : 48,
+      minWidth: Platform.OS === 'ios' ? 80 : 48,
     },
     headerBackButtonText: {
       fontSize: 17,
@@ -148,7 +151,7 @@ const styles = StyleSheet.create({
       paddingHorizontal: 8,
     },
     headerSpacer: {
-      width: Platform.OS === 'ios' ? 120 : 48,
+      width: Platform.OS === 'ios' ? 80 : 48,
     },
     loadingContainer: {
       flex: 1,
@@ -212,4 +215,3 @@ const styles = StyleSheet.create({
       paddingBottom: 120,
     },
   });
-  
