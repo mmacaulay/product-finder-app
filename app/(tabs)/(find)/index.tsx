@@ -1,0 +1,69 @@
+import { router } from 'expo-router';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+
+import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
+import { IconSymbol } from '@/components/ui/icon-symbol';
+import { AppColors } from '@/constants/theme';
+
+export default function FindScreen() {
+  const handleScan = () => {
+    router.push('/camera-modal');
+  };
+
+  return (
+    <ThemedView style={styles.container}>
+      <ThemedView style={styles.titleContainer}>
+        <ThemedText type="title">Find Products</ThemedText>
+        <ThemedText type="default" style={styles.bodyText}>
+          Tap scan and then hold the camera over the product&apos;s barcode.
+        </ThemedText>
+
+        <TouchableOpacity style={styles.scanButton} onPress={handleScan}>
+          <IconSymbol name="camera.fill" size={24} color={AppColors.white} />
+          <ThemedText style={styles.scanButtonText}>Scan</ThemedText>
+        </TouchableOpacity>
+      </ThemedView>
+    </ThemedView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  titleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 16,
+  },
+  scanButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: AppColors.primary,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 12,
+    gap: 8,
+    marginTop: 16,
+    shadowColor: AppColors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  scanButtonText: {
+    color: AppColors.white,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  bodyText: {
+    textAlign: 'center',
+  },
+});

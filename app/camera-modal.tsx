@@ -1,4 +1,3 @@
-import { useBarcode } from '@/contexts/BarcodeContext';
 import { AppColors } from '@/constants/theme';
 import { BarcodeScanningResult, CameraView, useCameraPermissions } from 'expo-camera';
 import { router } from 'expo-router';
@@ -7,7 +6,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function CameraModal() {
   const [permission, requestPermission] = useCameraPermissions();
-  const { setBarcodeData } = useBarcode();
   const hasScannedRef = useRef(false);
 
   // Reset scan flag when component mounts/unmounts
@@ -23,8 +21,12 @@ export default function CameraModal() {
     if (hasScannedRef.current) return;
 
     hasScannedRef.current = true;
-    setBarcodeData({ data: barcode.data, type: barcode.type });
+
+    // Dismiss the modal first
     router.dismiss();
+
+    // Navigate to the product screen with the scanned UPC
+    router.push(`/(tabs)/(find)/product?upc=${barcode.data}`);
   };
 
   if (!permission) {

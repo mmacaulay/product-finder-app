@@ -51,6 +51,7 @@ jest.mock('expo-router', () => ({
     replace: jest.fn(),
     back: jest.fn(),
   })),
+  useLocalSearchParams: jest.fn(() => ({})),
   Redirect: 'Redirect',
 }));
 
@@ -61,13 +62,5 @@ jest.mock('expo-camera', () => ({
     { granted: true, canAskAgain: true, status: 'granted' },
     jest.fn(),
   ]),
-}));
-
-// Mock BarcodeContext
-jest.mock('@/contexts/BarcodeContext', () => ({
-  useBarcode: jest.fn(() => ({
-    barcodeData: null,
-    setBarcodeData: jest.fn(),
-  })),
 }));
 

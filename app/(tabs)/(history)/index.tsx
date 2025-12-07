@@ -2,27 +2,19 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { HistoryItem } from '@/components/history-item';
 import { useHistory } from '@/contexts/HistoryContext';
-import { useBarcode } from '@/contexts/BarcodeContext';
 import { router } from 'expo-router';
-import { ActivityIndicator, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { AppColors } from '@/constants/theme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function HistoryScreen() {
   const { history, loading } = useHistory();
-  const { setBarcodeData } = useBarcode();
   const insets = useSafeAreaInsets();
 
-  const handleItemPress = (upc: string, barcodeType: string = 'ean13') => {
-    // Set the barcode data to navigate back to the Find tab with this product
-    setBarcodeData({
-      data: upc,
-      type: barcodeType,
-    });
-
-    // Navigate to the Find tab (use navigate for tab switching)
-    router.navigate('/(tabs)/');
+  const handleItemPress = (upc: string) => {
+    // Navigate to the product screen in the history stack
+    router.push(`/(tabs)/(history)/product?upc=${upc}`);
   };
 
   if (loading) {

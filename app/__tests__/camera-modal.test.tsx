@@ -1,17 +1,15 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import CameraModal from '../camera-modal';
-import { useBarcode } from '@/contexts/BarcodeContext';
 import { useCameraPermissions } from 'expo-camera';
 import { router } from 'expo-router';
 
 // Get the mocked functions
-const mockSetBarcodeData = jest.fn();
 const mockRequestPermission = jest.fn();
 const mockRouterDismiss = jest.fn();
+const mockRouterPush = jest.fn();
 
 // Setup mocks before tests
-jest.mock('@/contexts/BarcodeContext');
 jest.mock('expo-camera');
 jest.mock('expo-router');
 
@@ -19,14 +17,10 @@ describe('CameraModal', () => {
   beforeEach(() => {
     // Reset all mocks before each test
     jest.clearAllMocks();
-    
-    // Setup default mock implementations
-    (useBarcode as jest.Mock).mockReturnValue({
-      barcodeData: null,
-      setBarcodeData: mockSetBarcodeData,
-    });
-    
+
+    // Setup router mock implementations
     (router.dismiss as jest.Mock) = mockRouterDismiss;
+    (router.push as jest.Mock) = mockRouterPush;
   });
 
   describe('Permission States', () => {
@@ -105,7 +99,7 @@ describe('CameraModal', () => {
     it('handles barcode scanned event correctly', () => {
       const { UNSAFE_getByType } = render(<CameraModal />);
       const cameraView = UNSAFE_getByType('CameraView');
-      
+
       const mockBarcodeData = {
         data: '1234567890123',
         type: 'ean13',
@@ -114,19 +108,19 @@ describe('CameraModal', () => {
       // Simulate barcode scan
       fireEvent(cameraView, 'onBarcodeScanned', mockBarcodeData);
 
-      expect(mockSetBarcodeData).toHaveBeenCalledWith(mockBarcodeData);
       expect(mockRouterDismiss).toHaveBeenCalledTimes(1);
+      expect(mockRouterPush).toHaveBeenCalledWith('/(tabs)/(find)/product?upc=1234567890123');
     });
 
     it('prevents multiple barcode scans from being processed', () => {
       const { UNSAFE_getByType } = render(<CameraModal />);
       const cameraView = UNSAFE_getByType('CameraView');
-      
+
       const mockBarcodeData1 = {
         data: '1234567890123',
         type: 'ean13',
       };
-      
+
       const mockBarcodeData2 = {
         data: '9876543210987',
         type: 'upc_a',
@@ -138,15 +132,15 @@ describe('CameraModal', () => {
       fireEvent(cameraView, 'onBarcodeScanned', mockBarcodeData1);
 
       // Only the first scan should be processed
-      expect(mockSetBarcodeData).toHaveBeenCalledTimes(1);
-      expect(mockSetBarcodeData).toHaveBeenCalledWith(mockBarcodeData1);
+      expect(mockRouterPush).toHaveBeenCalledTimes(1);
+      expect(mockRouterPush).toHaveBeenCalledWith('/(tabs)/(find)/product?upc=1234567890123');
       expect(mockRouterDismiss).toHaveBeenCalledTimes(1);
     });
 
-    it('sets barcode data with correct structure', () => {
+    it('navigates to product screen with correct UPC', () => {
       const { UNSAFE_getByType } = render(<CameraModal />);
       const cameraView = UNSAFE_getByType('CameraView');
-      
+
       const mockBarcodeData = {
         data: '7896543210987',
         type: 'code128',
@@ -154,10 +148,7 @@ describe('CameraModal', () => {
 
       fireEvent(cameraView, 'onBarcodeScanned', mockBarcodeData);
 
-      expect(mockSetBarcodeData).toHaveBeenCalledWith({
-        data: '7896543210987',
-        type: 'code128',
-      });
+      expect(mockRouterPush).toHaveBeenCalledWith('/(tabs)/(find)/product?upc=7896543210987');
     });
 
     it('handles different barcode types correctly', () => {
@@ -171,14 +162,14 @@ describe('CameraModal', () => {
       barcodeTypes.forEach((barcodeData) => {
         // Reset mocks for each iteration
         jest.clearAllMocks();
-        
+
         const { UNSAFE_getByType } = render(<CameraModal />);
         const cameraView = UNSAFE_getByType('CameraView');
 
         fireEvent(cameraView, 'onBarcodeScanned', barcodeData);
 
-        expect(mockSetBarcodeData).toHaveBeenCalledWith(barcodeData);
         expect(mockRouterDismiss).toHaveBeenCalledTimes(1);
+        expect(mockRouterPush).toHaveBeenCalledWith(`/(tabs)/(find)/product?upc=${barcodeData.data}`);
       });
     });
   });
@@ -237,7 +228,7 @@ describe('CameraModal', () => {
 
       const { UNSAFE_getByType } = render(<CameraModal />);
       const cameraView = UNSAFE_getByType('CameraView');
-      
+
       const mockBarcodeData = {
         data: '1234567890123',
         type: 'ean13',
@@ -247,8 +238,8 @@ describe('CameraModal', () => {
       fireEvent(cameraView, 'onBarcodeScanned', mockBarcodeData);
 
       await waitFor(() => {
-        expect(mockSetBarcodeData).toHaveBeenCalledWith(mockBarcodeData);
         expect(mockRouterDismiss).toHaveBeenCalled();
+        expect(mockRouterPush).toHaveBeenCalledWith('/(tabs)/(find)/product?upc=1234567890123');
       });
     });
 
