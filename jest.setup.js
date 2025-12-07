@@ -12,6 +12,12 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
   },
 }));
 
+// Mock Firebase config to prevent validation errors
+jest.mock('@/config/firebase', () => ({
+  auth: {},
+  app: {},
+}));
+
 // Mock Firebase modules
 jest.mock('firebase/app', () => ({
   initializeApp: jest.fn(),
