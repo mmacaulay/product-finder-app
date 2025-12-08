@@ -19,9 +19,15 @@ export function ProductBasicInfo({ product }: ProductBasicInfoProps) {
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState<string | null>(null);
 
-  const handleImageError = (error: { nativeEvent?: { error?: string } }) => {
+  const handleImageError = (error: { error?: string }) => {
     setImageLoading(false);
-    setImageError(error.nativeEvent?.error || 'Failed to load product image');
+    setImageError('failed');
+    // Log error for debugging (can be replaced with analytics later)
+    console.error('[ProductBasicInfo] Image load failed:', {
+      url: product.imageUrl,
+      error: error.error,
+      upc: product.upcCode,
+    });
   };
 
   return (
@@ -37,10 +43,8 @@ export function ProductBasicInfo({ product }: ProductBasicInfoProps) {
           )}
           {imageError && (
             <View style={styles.imageErrorContainer}>
-              <IconSymbol name="exclamationmark.triangle" size={48} color={AppColors.error} />
-              <ThemedText style={styles.imageErrorText}>Failed to load image</ThemedText>
-              <ThemedText style={styles.imageUrlText} selectable>{product.imageUrl}</ThemedText>
-              <ThemedText style={styles.imageErrorDetails} selectable>Error: {imageError}</ThemedText>
+              <IconSymbol name="photo.badge.exclamationmark" size={64} color={AppColors.primary} style={styles.errorIcon} />
+              <ThemedText style={styles.imageErrorText}>Image Unavailable</ThemedText>
             </View>
           )}
           {!imageError && (
@@ -100,17 +104,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
-    backgroundColor: 'rgba(0, 122, 255, 0.05)',
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 122, 255, 0.2)',
     minHeight: 300,
   },
   productImage: {
     width: '100%',
     height: 400,
     maxHeight: 500,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   hiddenImage: {
     opacity: 0,
@@ -129,26 +138,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
+    gap: 12,
     padding: 16,
   },
+  errorIcon: {
+    opacity: 0.4,
+  },
   imageErrorText: {
-    fontSize: 14,
-    color: AppColors.error,
-    fontWeight: '600',
-  },
-  imageUrlText: {
-    fontSize: 10,
-    opacity: 0.5,
-    textAlign: 'center',
-    marginTop: 4,
-  },
-  imageErrorDetails: {
-    fontSize: 11,
+    fontSize: 16,
+    fontWeight: '500',
     opacity: 0.6,
-    textAlign: 'center',
-    marginTop: 8,
-    fontStyle: 'italic',
   },
   section: {
     marginBottom: 8,
