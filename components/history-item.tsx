@@ -6,6 +6,7 @@ import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 import { IconSymbol } from './ui/icon-symbol';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 
 interface HistoryItemProps {
   item: HistoryItemType;
@@ -13,6 +14,7 @@ interface HistoryItemProps {
 
 export function HistoryItem({ item }: HistoryItemProps) {
   const router = useRouter();
+  const [imageError, setImageError] = useState(false);
 
   const formatTimeAgo = (timestamp: number): string => {
     const now = Date.now();
@@ -46,12 +48,21 @@ export function HistoryItem({ item }: HistoryItemProps) {
         <ThemedView style={styles.content}>
         {/* Product Image or Icon */}
         <View style={styles.imageContainer}>
-          {item.product?.imageUrl ? (
+          {item.product?.imageUrl && !imageError ? (
             <Image
               source={{ uri: item.product.imageUrl }}
               style={styles.productImage}
               contentFit="cover"
               cachePolicy="memory-disk"
+              onError={(error) => {
+                setImageError(true);
+                // Log error for debugging (can be replaced with analytics later)
+                console.error('[HistoryItem] Image load failed:', {
+                  url: item.product?.imageUrl,
+                  error: error.error,
+                  upc: item.upc,
+                });
+              }}
             />
           ) : (
             <View style={[styles.iconPlaceholder, productNotFound && styles.iconPlaceholderError]}>
@@ -127,6 +138,7 @@ const styles = StyleSheet.create({
   productImage: {
     width: '100%',
     height: '100%',
+    backgroundColor: '#fff',
   },
   iconPlaceholder: {
     width: '100%',

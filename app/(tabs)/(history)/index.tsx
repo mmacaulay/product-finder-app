@@ -1,10 +1,10 @@
+import { HistoryItem } from '@/components/history-item';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { HistoryItem } from '@/components/history-item';
-import { useHistory } from '@/contexts/HistoryContext';
-import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { AppColors } from '@/constants/theme';
+import { useHistory } from '@/contexts/HistoryContext';
+import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function HistoryScreen() {
@@ -49,7 +49,7 @@ export default function HistoryScreen() {
         data={history}
         keyExtractor={(item) => `${item.upc}-${item.timestamp}`}
         renderItem={({ item }) => <HistoryItem item={item} />}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[styles.listContent, { paddingBottom: insets.bottom + 40 }]}
         showsVerticalScrollIndicator={false}
       />
     </ThemedView>
